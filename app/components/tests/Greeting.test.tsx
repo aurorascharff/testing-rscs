@@ -1,7 +1,7 @@
 import { renderAsync, screen } from "@testing-library/react";
-import Greeting from "../../Greeting";
+import Greeting from "../Greeting";
 
-describe("Greeting (fixed - renderAsync)", () => {
+describe("Greeting", () => {
   it("should render the message from a resolved promise", async () => {
     const messagePromise = Promise.resolve("Hello from the server!");
 

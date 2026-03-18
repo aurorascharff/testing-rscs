@@ -1,7 +1,7 @@
 import { renderAsync, screen } from "@testing-library/react";
-import UserCard from "../../UserCard";
+import UserCard from "../UserCard";
 
-describe("UserCard (fixed - renderAsync)", () => {
+describe("UserCard", () => {
   it("should render the user card heading", async () => {
     const userPromise = Promise.resolve({
       name: "Aurora",

@@ -1,8 +1,8 @@
 import { renderAsync, screen } from "@testing-library/react";
-import Greeting from "../../Greeting";
-import UserProfile from "../../UserProfile";
+import Greeting from "../Greeting";
+import UserProfile from "../UserProfile";
 
-describe("Rerender (fixed - renderAsync)", () => {
+describe("Rerender", () => {
   it("should support async rerender with new props", async () => {
     const { rerender } = await renderAsync(
       <Greeting messagePromise={Promise.resolve("Hello!")} />,
@@ -17,7 +17,7 @@ describe("Rerender (fixed - renderAsync)", () => {
     expect(screen.getByText("Updated message!")).toBeInTheDocument();
   });
 
-  it("should support rerendering from async RSC to different content", async () => {
+  it("should support rerendering to a different component", async () => {
     const { rerender } = await renderAsync(<UserProfile />);
 
     expect(screen.getByText("Aurora Scharff")).toBeInTheDocument();

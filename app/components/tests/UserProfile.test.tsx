@@ -1,7 +1,7 @@
 import { renderAsync, screen } from "@testing-library/react";
-import UserProfile from "../../UserProfile";
+import UserProfile from "../UserProfile";
 
-describe("UserProfile (fixed - renderAsync)", () => {
+describe("UserProfile", () => {
   it("should render the user name", async () => {
     await renderAsync(<UserProfile />);
 

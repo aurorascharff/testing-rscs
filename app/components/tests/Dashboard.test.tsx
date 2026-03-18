@@ -1,7 +1,7 @@
 import { renderAsync, screen } from "@testing-library/react";
-import Dashboard from "../../Dashboard";
+import Dashboard from "../Dashboard";
 
-describe("Dashboard (fixed - renderAsync)", () => {
+describe("Dashboard", () => {
   it("should render the dashboard heading", async () => {
     await renderAsync(<Dashboard />);
 

@@ -1,36 +1,65 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# testing-rscs
 
-## Getting Started
+Demo project for the [`renderAsync` PR](https://github.com/testing-library/react-testing-library/pull/XXXX) to React Testing Library — a first-class API for testing async React Server Components and components using React 19's `use()` API.
 
-First, run the development server:
+## Background
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+React 19's client-side renderer (`react-dom/client`) does not support `async function` components — they only work with the server renderer. This has been a [major pain point](https://github.com/testing-library/react-testing-library/issues/1209) for the community, forcing projects to either pin to a specific RC version of React (`19.0.0-rc-380f5d67-20241113`), write custom render helpers, or abandon unit testing RSCs in favor of E2E tests.
+
+`renderAsync` solves this with a two-phase approach:
+
+1. **Pre-resolution**: Recursively walks the JSX element tree, calls `async function` components with `await`, and replaces them with their resolved output before React ever sees them.
+2. **Suspense + `act()`**: Wraps the resolved tree in a `<Suspense>` boundary and renders inside `await act(async () => ...)`, so components using `use(promise)` suspend and resolve correctly.
+
+## What this repo demonstrates
+
+This Next.js 16 app covers every component pattern that breaks with the standard `render()` and works with `renderAsync()`:
+
+| Component | Type | Pattern |
+|---|---|---|
+| `UserProfile` | Async RSC | Simple `async function` with `await` |
+| `PostList` | Async RSC | Async data fetching returning a list |
+| `Dashboard` | Nested async RSC | Renders `UserProfile` and `PostList` as children |
+| `Greeting` | Client with `use()` | Unwraps a `Promise<string>` via `use()` |
+| `UserCard` | Client with `use()` + Suspense | Internal `<Suspense>` boundary around `use()` |
+
+Tests also cover async rerender and switching between component types.
+
+## Usage
+
+```tsx
+import { renderAsync, screen } from "@testing-library/react";
+import Dashboard from "../Dashboard";
+
+it("renders nested async server components", async () => {
+  await renderAsync(<Dashboard />);
+
+  expect(screen.getByText("Aurora Scharff")).toBeInTheDocument();
+});
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Setup
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm install
+npm test
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Installing the RTL fork locally
 
-## Learn More
+The fork is installed from a tarball to avoid the duplicate React instances problem that occurs with symlinked packages:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+cd /path/to/react-testing-library
+npm run build && npm pack
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+cd /path/to/testing-rscs
+npm install /path/to/react-testing-library/testing-library-react-0.0.0-semantically-released.tgz
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Running tests
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm test            # single run
+npm run test:watch  # watch mode
+```
