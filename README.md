@@ -1,6 +1,6 @@
 # testing-rscs
 
-Demo project for the [`renderAsync` PR](https://github.com/testing-library/react-testing-library/pull/XXXX) to React Testing Library — a first-class API for testing async React Server Components and components using React 19's `use()` API.
+Demo project for the [`renderAsync` PR (#1444)](https://github.com/testing-library/react-testing-library/pull/1444) to React Testing Library — a first-class API for testing async React Server Components and components using React 19's `use()` API.
 
 ## What this repo demonstrates
 
