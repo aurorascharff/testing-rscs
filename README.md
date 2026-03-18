@@ -31,26 +31,22 @@ it("renders nested async server components", async () => {
 
 ## Setup
 
+The RTL fork with `renderAsync` is included as a committed tarball (`testing-library-react.tgz`), so no extra steps are needed:
+
 ```bash
 npm install
 npm test
 ```
 
-### Installing the RTL fork locally
+### Updating the RTL fork
 
-The fork is installed from a tarball to avoid the duplicate React instances problem that occurs with symlinked packages:
+To update the tarball after making changes to the fork:
 
 ```bash
 cd /path/to/react-testing-library
 npm run build && npm pack
 
+cp testing-library-react-0.0.0-semantically-released.tgz /path/to/testing-rscs/testing-library-react.tgz
 cd /path/to/testing-rscs
-npm install /path/to/react-testing-library/testing-library-react-0.0.0-semantically-released.tgz
-```
-
-## Running tests
-
-```bash
-npm test            # single run
-npm run test:watch  # watch mode
+npm install
 ```
