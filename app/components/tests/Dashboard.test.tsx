@@ -11,17 +11,15 @@ describe("Dashboard", () => {
   it("should render nested async UserProfile", async () => {
     await renderAsync(<Dashboard />);
 
-    expect(screen.getByText("Aurora Scharff")).toBeInTheDocument();
-    expect(screen.getByText("Developer")).toBeInTheDocument();
+    expect(screen.getByText("Alice Johnson")).toBeInTheDocument();
+    expect(screen.getByText("Engineer")).toBeInTheDocument();
   });
 
   it("should render nested async PostList", async () => {
     await renderAsync(<Dashboard />);
 
-    expect(screen.getByText("Testing RSCs")).toBeInTheDocument();
-    expect(screen.getByText("React 19 Features")).toBeInTheDocument();
-    expect(
-      screen.getByText("Server Components Deep Dive"),
-    ).toBeInTheDocument();
+    expect(screen.getByText("Getting Started")).toBeInTheDocument();
+    expect(screen.getByText("Configuration Guide")).toBeInTheDocument();
+    expect(screen.getByText("Advanced Patterns")).toBeInTheDocument();
   });
 });

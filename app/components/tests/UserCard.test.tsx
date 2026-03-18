@@ -4,8 +4,8 @@ import UserCard from "../UserCard";
 describe("UserCard", () => {
   it("should render the user card heading", async () => {
     const userPromise = Promise.resolve({
-      name: "Aurora",
-      email: "aurora@example.com",
+      name: "Alice",
+      email: "alice@test.com",
     });
 
     await renderAsync(<UserCard userPromise={userPromise} />);
@@ -15,13 +15,13 @@ describe("UserCard", () => {
 
   it("should render the resolved user data", async () => {
     const userPromise = Promise.resolve({
-      name: "Aurora",
-      email: "aurora@example.com",
+      name: "Alice",
+      email: "alice@test.com",
     });
 
     await renderAsync(<UserCard userPromise={userPromise} />);
 
-    expect(screen.getByText("Aurora")).toBeInTheDocument();
-    expect(screen.getByText("aurora@example.com")).toBeInTheDocument();
+    expect(screen.getByText("Alice")).toBeInTheDocument();
+    expect(screen.getByText("alice@test.com")).toBeInTheDocument();
   });
 });

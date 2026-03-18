@@ -1,5 +1,5 @@
 async function fetchUser() {
-  return { name: "Aurora Scharff", role: "Developer" };
+  return { name: "Alice Johnson", role: "Engineer" };
 }
 
 export default async function UserProfile() {
@@ -7,8 +7,8 @@ export default async function UserProfile() {
 
   return (
     <div>
-      <h1>{user.name}</h1>
-      <p>{user.role}</p>
+      <p className="text-sm font-medium">{user.name}</p>
+      <p className="text-sm text-zinc-400">{user.role}</p>
     </div>
   );
 }

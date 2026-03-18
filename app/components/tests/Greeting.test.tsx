@@ -11,10 +11,10 @@ describe("Greeting", () => {
   });
 
   it("should render a different message", async () => {
-    const messagePromise = Promise.resolve("Welcome back, Aurora!");
+    const messagePromise = Promise.resolve("Welcome back!");
 
     await renderAsync(<Greeting messagePromise={messagePromise} />);
 
-    expect(screen.getByText("Welcome back, Aurora!")).toBeInTheDocument();
+    expect(screen.getByText("Welcome back!")).toBeInTheDocument();
   });
 });

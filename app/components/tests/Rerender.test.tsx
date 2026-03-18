@@ -20,7 +20,7 @@ describe("Rerender", () => {
   it("should support rerendering to a different component", async () => {
     const { rerender } = await renderAsync(<UserProfile />);
 
-    expect(screen.getByText("Aurora Scharff")).toBeInTheDocument();
+    expect(screen.getByText("Alice Johnson")).toBeInTheDocument();
 
     await rerender(
       <Greeting messagePromise={Promise.resolve("Switched component!")} />,

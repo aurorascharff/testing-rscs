@@ -12,8 +12,8 @@ function UserDetails({ userPromise }: { userPromise: Promise<User> }) {
 
   return (
     <div>
-      <h2>{user.name}</h2>
-      <p>{user.email}</p>
+      <p className="text-sm font-medium">{user.name}</p>
+      <p className="text-sm text-zinc-400">{user.email}</p>
     </div>
   );
 }
@@ -24,9 +24,9 @@ export default function UserCard({
   userPromise: Promise<User>;
 }) {
   return (
-    <div>
-      <h1>User Card</h1>
-      <Suspense fallback={<p>Loading user...</p>}>
+    <div className="space-y-1">
+      <p className="text-sm font-medium">User Card</p>
+      <Suspense fallback={<p className="text-sm text-zinc-500">Loading user...</p>}>
         <UserDetails userPromise={userPromise} />
       </Suspense>
     </div>

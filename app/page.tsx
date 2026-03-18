@@ -1,58 +1,136 @@
 import { Suspense } from "react";
+import AppShell from "./components/AppShell";
+import ArticlePage from "./components/ArticlePage";
 import Dashboard from "./components/Dashboard";
 import Greeting from "./components/Greeting";
+import SplitLayout from "./components/SplitLayout";
+import PageHeader from "./components/PageHeader";
+import ActivityFeed from "./components/ActivityFeed";
+import TeamPage from "./components/TeamPage";
 import UserCard from "./components/UserCard";
+import UserProfile from "./components/UserProfile";
 
 export default function Home() {
-  const messagePromise = Promise.resolve("Welcome to the RSC Testing Demo!");
-  const userPromise = Promise.resolve({
-    name: "Aurora Scharff",
-    email: "aurora@example.com",
-  });
-
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col gap-12 bg-white px-16 py-32 dark:bg-black">
-        <h1 className="text-3xl font-semibold tracking-tight text-black dark:text-zinc-50">
-          RSC Testing Demo
+    <div className="min-h-screen px-6 py-16 font-sans">
+      <div className="mx-auto max-w-2xl">
+        <h1 className="text-xl font-semibold tracking-tight text-zinc-100">
+          renderAsync Demo
         </h1>
-        <p className="text-lg text-zinc-600 dark:text-zinc-400">
-          This app demonstrates components that break with default RTL{" "}
-          <code className="rounded bg-zinc-100 px-1.5 py-0.5 text-sm dark:bg-zinc-800">
-            render()
-          </code>{" "}
-          but work with{" "}
-          <code className="rounded bg-zinc-100 px-1.5 py-0.5 text-sm dark:bg-zinc-800">
-            renderAsync()
-          </code>{" "}
-          from the forked React Testing Library.
+        <p className="mt-1 text-sm text-zinc-400">
+          Testing async server components and client components with{" "}
+          <code className="rounded bg-zinc-800 px-1 text-zinc-300">use()</code>{" "}
+          via{" "}
+          <code className="rounded bg-zinc-800 px-1 text-zinc-300">
+            renderAsync
+          </code>
+          .
         </p>
 
-        <section className="flex flex-col gap-4">
-          <h2 className="text-xl font-medium text-black dark:text-zinc-100">
-            Async Server Component
-          </h2>
-          <Suspense fallback={<p>Loading greeting...</p>}>
-            <Greeting messagePromise={messagePromise} />
-          </Suspense>
-        </section>
+        <div className="mt-10 space-y-8">
+          <Section component="UserProfile" description="Async server component">
+            <Suspense>
+              <UserProfile />
+            </Suspense>
+          </Section>
 
-        <section className="flex flex-col gap-4">
-          <h2 className="text-xl font-medium text-black dark:text-zinc-100">
-            Client Component with use()
-          </h2>
-          <UserCard userPromise={userPromise} />
-        </section>
+          <Section
+            component="Dashboard"
+            description="Nested async server components (UserProfile + PostList)"
+          >
+            <Suspense>
+              <Dashboard />
+            </Suspense>
+          </Section>
 
-        <section className="flex flex-col gap-4">
-          <h2 className="text-xl font-medium text-black dark:text-zinc-100">
-            Nested Async Server Components
-          </h2>
-          <Suspense fallback={<p>Loading dashboard...</p>}>
-            <Dashboard />
-          </Suspense>
-        </section>
-      </main>
+          <Section component="Greeting" description="Client component — use(Promise)">
+            <Suspense>
+              <Greeting
+                messagePromise={Promise.resolve("Hello from a promise!")}
+              />
+            </Suspense>
+          </Section>
+
+          <Section
+            component="UserCard"
+            description="Client component — use(Promise) + Suspense"
+          >
+            <UserCard
+              userPromise={Promise.resolve({
+                name: "Alice",
+                email: "alice@test.com",
+              })}
+            />
+          </Section>
+
+          <Section
+            component="ArticlePage"
+            description="Mixed tree — async RSC, sync server, client use(), client useState"
+          >
+            <Suspense>
+              <ArticlePage />
+            </Suspense>
+          </Section>
+
+          <Section
+            component="TeamPage"
+            description="Mixed tree — async RSC, context provider, use(context), client use()"
+          >
+            <Suspense>
+              <TeamPage />
+            </Suspense>
+          </Section>
+
+          <Section
+            component="AppShell"
+            description="Full app tree — async layout wrapping ArticlePage"
+          >
+            <Suspense>
+              <AppShell>
+                <Suspense>
+                  <ArticlePage />
+                </Suspense>
+              </AppShell>
+            </Suspense>
+          </Section>
+
+          <Section
+            component="SplitLayout"
+            description="Prop-walking — async RSCs passed as header and sidebar props"
+          >
+            <Suspense>
+              <SplitLayout
+                header={<PageHeader title="Articles" />}
+                sidebar={<ActivityFeed />}
+              >
+                <p className="text-sm text-zinc-400">Main content area</p>
+              </SplitLayout>
+            </Suspense>
+          </Section>
+        </div>
+      </div>
     </div>
+  );
+}
+
+function Section({
+  component,
+  description,
+  children,
+}: {
+  component: string;
+  description: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <section>
+      <div className="mb-2">
+        <code className="text-sm text-zinc-200">{`<${component} />`}</code>
+        <p className="text-xs text-zinc-500">{description}</p>
+      </div>
+      <div className="rounded-lg border border-zinc-800 bg-zinc-900/50 p-4">
+        {children}
+      </div>
+    </section>
   );
 }

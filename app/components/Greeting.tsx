@@ -9,5 +9,5 @@ type Props = {
 export default function Greeting({ messagePromise }: Props) {
   const message = use(messagePromise);
 
-  return <h1>{message}</h1>;
+  return <p className="text-sm">{message}</p>;
 }
